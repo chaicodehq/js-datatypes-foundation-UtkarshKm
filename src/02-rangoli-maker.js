@@ -45,22 +45,52 @@
  *   extractRangoliCenter("***LOTUS***", 3, 8) // => "LOTUS"
  *   splitAndJoinRangoli("red,blue", ",", "-")  // => "red-blue"
  */
+
+function isString(str) {
+	return typeof str == "string";
+}
+
+function positive(int) {
+	return int > 0;
+}
+
+function isInteger(num) {
+	return Number.isInteger(num);
+}
+
 export function repeatPattern(pattern, times) {
-  // Your code here
+	// Your code here
+	if (isString(pattern) && positive(times) && isInteger(times)) {
+		return pattern.repeat(times);
+	}
+	return "";
 }
 
 export function extractRangoliCenter(design, start, end) {
-  // Your code here
+	// Your code here
+	if (!isString(design)) return "";
+	if (typeof start != "number" && typeof end != "number") return "";
+	return design.slice(start, end);
 }
 
 export function splitAndJoinRangoli(colorString, oldSep, newSep) {
-  // Your code here
+	// Your code here
+	if (!isString(colorString)) return "";
+	const splitArray = colorString.split(oldSep);
+	return splitArray.join(newSep);
 }
 
 export function replaceRangoliColor(design, oldColor, newColor) {
-  // Your code here
+	// Your code here
+	if (isString(design) && isString(oldColor) && isString(newColor)) {
+		return design.replaceAll(oldColor, newColor);
+	}
+	return "";
 }
 
 export function makeRangoliBorder(char, length) {
-  // Your code here
+	// Your code here
+	if (!isString(char) || !positive(length)) return "";
+	const rep = char.repeat(length);
+	return rep.slice(0, length);
 }
