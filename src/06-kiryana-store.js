@@ -65,7 +65,7 @@ export function getAffordableItems(items, maxPrice) {
 
 export function calculateTotal(items) {
 	// Your code here
-	if (!Array.isArray(items) || items.length == 0) return [];
+	if (!Array.isArray(items) || items.length == 0) return 0;
 
 	return items.reduce((sum, item) => (sum += item.price * item.qty), 0);
 }
