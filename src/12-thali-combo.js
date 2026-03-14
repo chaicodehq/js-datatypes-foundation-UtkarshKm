@@ -53,17 +53,82 @@
  *   // => "RAJASTHANI THALI (Veg) - Items: dal - Rs.250.00"
  */
 export function createThaliDescription(thali) {
-  // Your code here
+	// Your code here
+	if (!thali || typeof thali !== "object" || Array.isArray(thali)) return "";
+
+	const { name, items, price, isVeg } = thali;
+
+	if (
+		typeof name !== "string" ||
+		!Array.isArray(items) ||
+		typeof price !== "number" ||
+		typeof isVeg !== "boolean"
+	)
+		return "";
+
+	return `${name.toUpperCase()} (${isVeg ? "Veg" : "Non-Veg"}) - Items: ${items.join(", ")} - Rs.${price.toFixed(2)}`;
 }
 
 export function getThaliStats(thalis) {
-  // Your code here
+	// Your code here
+	if (!Array.isArray(thalis) || thalis.length === 0) return null;
+
+	const totalThalis = thalis.length;
+
+	const nonVegCount = thalis.filter((th) => !th.isVeg).length;
+	const vegCount = totalThalis - nonVegCount;
+
+	let min = Infinity;
+	let max = -Infinity;
+
+	const sum = thalis.reduce((sum, th) => {
+		min = Math.min(min, th.price);
+		max = Math.max(max, th.price);
+		return sum + th.price;
+	}, 0);
+
+	const avgPrice = (sum / totalThalis).toFixed(2);
+
+	const names = thalis.map((th) => th.name);
+
+	return {
+		totalThalis,
+		vegCount,
+		nonVegCount,
+		avgPrice,
+		cheapest: min,
+		costliest: max,
+		names,
+	};
 }
 
 export function searchThaliMenu(thalis, query) {
-  // Your code here
+	// Your code here
+	if (!Array.isArray(thalis) || typeof query !== "string") return [];
+
+	query = query.toLowerCase();
+
+	return thalis.filter(
+		(th) =>
+			th.name.toLowerCase().includes(query) ||
+			th.items.some((item) => item.toLowerCase().includes(query)),
+	);
 }
 
 export function generateThaliReceipt(customerName, thalis) {
-  // Your code here
+	if (typeof customerName !== "string" || !Array.isArray(thalis) || thalis.length === 0) return "";
+
+	const lineItems = thalis
+		.map(th => `- ${th.name} x Rs.${th.price}`)
+		.join("\n");
+
+	const total = thalis.reduce((sum, th) => sum + th.price, 0);
+
+	return `THALI RECEIPT
+---
+Customer: ${customerName.toUpperCase()}
+${lineItems}
+---
+Total: Rs.${total}
+Items: ${thalis.length}`;
 }
